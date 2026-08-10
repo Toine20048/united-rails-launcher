@@ -50,6 +50,8 @@
 #include "tools/GenericProfiler.h"
 #include "ui/InstanceWindow.h"
 #include "ui/MainWindow.h"
+#include "unlimitedrails/HomeWindow.h"
+#include "unlimitedrails/Style.h"
 #include "ui/ToolTipFilter.h"
 #include "ui/ViewLogWindow.h"
 
@@ -646,6 +648,11 @@ Application::Application(int& argc, char** argv) : QApplication(argc, argv)
         // Remembered state
         m_settings->registerSetting("LastUsedGroupForNewInstance", QString());
 
+        // Unlimited Rails: which instance holds the pack, and what version is in it.
+        // These must be registered or SettingsObject silently drops writes to them.
+        m_settings->registerSetting("URPackInstanceID", QString());
+        m_settings->registerSetting("URPackVersion", QString());
+
         m_settings->registerSetting("MenuBarInsteadOfToolBar", false);
 
         m_settings->registerSetting("NumberOfConcurrentTasks", 10);
@@ -1216,12 +1223,37 @@ Application::Application(int& argc, char** argv) : QApplication(argc, argv)
         installEventFilter(new ToolTipFilter);
     }
 
-    if (createSetupWizard()) {
-        return;
-    }
+    // No setup wizard in this fork — createSetupWizard() is left in place but
+    // unused, so upstream changes to it still merge cleanly.
+    applyLauncherDefaults();
 
     m_themeManager->applyCurrentlySelectedTheme(true);
+    // Applied after the theme so the Unlimited Rails look wins everywhere.
+    UnlimitedRails::applyStyle(*this);
     performMainStartupAction();
+}
+
+/**
+ * Applies the defaults the setup wizard would otherwise ask for.
+ *
+ * This fork shows no wizard: accounts are handled on the home screen and there
+ * is nothing else worth interrupting a first run for.
+ */
+void Application::applyLauncherDefaults()
+{
+    if (settings()->get("Language").toString().isEmpty()) {
+        settings()->set("Language", QLocale::system().name());
+    }
+    if (!m_themeManager->isValidApplicationTheme(settings()->get("ApplicationTheme").toString())) {
+        settings()->set("ApplicationTheme", QString("dark"));
+    }
+    if (!m_themeManager->isValidIconTheme(settings()->get("IconTheme").toString())) {
+        settings()->set("IconTheme", QString("pe_colored"));
+    }
+    // Java is downloaded automatically rather than asking the player to find it.
+    settings()->set("AutomaticJavaDownload", true);
+    settings()->set("AutomaticJavaSwitch", true);
+    settings()->set("UserAskedAboutAutomaticJavaDownload", true);
 }
 
 bool Application::createSetupWizard()
@@ -1391,10 +1423,14 @@ void Application::performMainStartupAction()
             return;
         }
     }
-    if (!m_mainWindow) {
-        // normal main window
-        showMainWindow(false);
-        qDebug() << "<> Main window shown.";
+    if (!m_homeWindow) {
+        // This fork ships a single-pack home screen instead of Prism's instance
+        // list. showMainWindow() is left intact but is no longer the entry point.
+        m_homeWindow = new UnlimitedRails::HomeWindow();
+        m_homeWindow->show();
+        connect(m_homeWindow, &UnlimitedRails::HomeWindow::isClosing, this, &Application::on_windowClose);
+        m_openWindows++;
+        qDebug() << "<> Home window shown.";
     }
 
     // initialize the updater
@@ -1416,7 +1452,9 @@ void Application::performMainStartupAction()
         FS::deletePath(tempRoot);
     }
 
-    if (!m_urlsToImport.isEmpty()) {
+    // m_mainWindow is normally null in this fork, since the home window replaced
+    // it. Importing arbitrary packs is not something this launcher offers.
+    if (!m_urlsToImport.isEmpty() && m_mainWindow) {
         qDebug() << "<> Importing from url:" << m_urlsToImport;
         m_mainWindow->processURLs(m_urlsToImport);
     }

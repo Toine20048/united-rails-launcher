@@ -1,0 +1,19 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+    <qresource prefix="/">
+        <file>@Launcher_AppID@.svg</file>
+        <!-- Tiled icon rendered per size: QIcon picks the exact pixel size
+             instead of scaling one SVG, which the embedded raster survives badly -->
+        <file>icon-16.png</file>
+        <file>icon-24.png</file>
+        <file>icon-32.png</file>
+        <file>icon-48.png</file>
+        <file>icon-64.png</file>
+        <file>icon-128.png</file>
+        <file>icon-256.png</file>
+        <!-- Monochrome settings gear, to match the other controls -->
+        <file>gear.svg</file>
+        <!-- Shown immediately at startup, before the server screenshots arrive -->
+        <file>default-backdrop.jpg</file>
+    </qresource>
+</RCC>

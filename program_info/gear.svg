@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Settings gear for the home screen.
+  Drawn rather than using the "⚙" character, which the system renders as a
+  colour emoji and will not match the other controls.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+  <g stroke="#e8e6e0" stroke-width="2.6" stroke-linecap="round" fill="none">
+    <!-- Teeth, every 45 degrees -->
+    <line x1="12" y1="2.2"  x2="12" y2="5.2"  transform="rotate(0 12 12)"/>
+    <line x1="12" y1="2.2"  x2="12" y2="5.2"  transform="rotate(45 12 12)"/>
+    <line x1="12" y1="2.2"  x2="12" y2="5.2"  transform="rotate(90 12 12)"/>
+    <line x1="12" y1="2.2"  x2="12" y2="5.2"  transform="rotate(135 12 12)"/>
+    <line x1="12" y1="2.2"  x2="12" y2="5.2"  transform="rotate(180 12 12)"/>
+    <line x1="12" y1="2.2"  x2="12" y2="5.2"  transform="rotate(225 12 12)"/>
+    <line x1="12" y1="2.2"  x2="12" y2="5.2"  transform="rotate(270 12 12)"/>
+    <line x1="12" y1="2.2"  x2="12" y2="5.2"  transform="rotate(315 12 12)"/>
+  </g>
+  <!-- Ring drawn as a stroke so the centre stays transparent -->
+  <circle cx="12" cy="12" r="5.4" fill="none" stroke="#e8e6e0" stroke-width="3.2"/>
+</svg>

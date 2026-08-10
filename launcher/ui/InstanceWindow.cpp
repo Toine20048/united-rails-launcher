@@ -36,6 +36,7 @@
 
 #include "InstanceWindow.h"
 #include "Application.h"
+#include "unlimitedrails/Style.h"
 
 #include <QCloseEvent>
 #include <QHBoxLayout>
@@ -54,12 +55,13 @@ InstanceWindow::InstanceWindow(MinecraftInstance* instance, QWidget* parent) : Q
 {
     setAttribute(Qt::WA_DeleteOnClose);
 
-    auto icon = APPLICATION->icons()->getIcon(m_instance->iconKey());
     QString windowTitle = tr("Console window for ") + m_instance->name();
 
     // Set window properties
     {
-        setWindowIcon(icon);
+        // This fork manages a single pack, so the per-instance icon carries no
+        // information. Use the launcher mark, same as every other window.
+        setWindowIcon(UnlimitedRails::launcherIcon());
         setWindowTitle(windowTitle);
     }
 

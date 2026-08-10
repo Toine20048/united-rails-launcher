@@ -828,6 +828,14 @@ SET(LAUNCHER_SOURCES
     logs/AnonymizeLog.cpp
     logs/AnonymizeLog.h
 
+    # Unlimited Rails - single-pack home screen and pack feed
+    unlimitedrails/Style.h
+    unlimitedrails/Style.cpp
+    unlimitedrails/PackSource.h
+    unlimitedrails/PackSource.cpp
+    unlimitedrails/HomeWindow.h
+    unlimitedrails/HomeWindow.cpp
+
     # GUI - windows
     ui/GuiUtil.h
     ui/GuiUtil.cpp
@@ -1232,6 +1240,12 @@ qt_add_resources(LAUNCHER_RESOURCES
 ######## Windows resource files ########
 if(WIN32)
     set(LAUNCHER_RCS ${CMAKE_CURRENT_BINARY_DIR}/../${Launcher_Branding_WindowsRC})
+
+    # windres pulls the .ico and .manifest in by name, and neither CMake nor
+    # ninja can see that. Without this the compiled resource goes stale and the
+    # executable silently keeps its previous icon after the .ico is changed.
+    set_source_files_properties(${LAUNCHER_RCS} PROPERTIES OBJECT_DEPENDS
+        "${CMAKE_CURRENT_BINARY_DIR}/../program_info/${Launcher_APP_BINARY_NAME}.ico;${CMAKE_CURRENT_BINARY_DIR}/../program_info/${Launcher_APP_BINARY_NAME}.manifest")
 endif()
 
 ######## Precompiled Headers ###########
@@ -1481,13 +1495,27 @@ if (UNIX AND APPLE AND Launcher_ENABLE_UPDATER)
 endif()
 
 # Set basic compiler warning/error flags for all targets
+#
+# Compilers newer than the ones upstream CI uses emit warnings this codebase
+# has not caught up with yet, which -Werror turns into a hard build failure.
+# Keep the strict default, but allow a build to opt out.
+option(Launcher_WARNINGS_AS_ERRORS "Treat compiler warnings as errors" ON)
+
 get_property(Launcher_TARGETS DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY BUILDSYSTEM_TARGETS)
 foreach(target ${Launcher_TARGETS})
-    message(STATUS "Enabling all warnings as errors for target '${target}'")
+    if (Launcher_WARNINGS_AS_ERRORS)
+        message(STATUS "Enabling all warnings as errors for target '${target}'")
+    endif()
     if (CMAKE_CXX_COMPILER_FRONTEND_VARIANT STREQUAL "MSVC")
-        target_compile_options(${target} PRIVATE /W4 /WX /permissive-)
+        target_compile_options(${target} PRIVATE /W4 /permissive-)
+        if (Launcher_WARNINGS_AS_ERRORS)
+            target_compile_options(${target} PRIVATE /WX)
+        endif()
     else()
-        target_compile_options(${target} PRIVATE -Wall -Wextra -Wpedantic -Werror)
+        target_compile_options(${target} PRIVATE -Wall -Wextra -Wpedantic)
+        if (Launcher_WARNINGS_AS_ERRORS)
+            target_compile_options(${target} PRIVATE -Werror)
+        endif()
     endif()
 endforeach()
 

@@ -55,6 +55,9 @@ class LaunchController;
 class LocalPeer;
 class InstanceWindow;
 class MainWindow;
+namespace UnlimitedRails {
+class HomeWindow;
+}
 class ViewLogWindow;
 class SetupWizard;
 class GenericPageProvider;
@@ -233,6 +236,7 @@ class Application : public QApplication {
    private:
     bool handleDataMigration(const QString& currentData, const QString& oldData, const QString& name, const QString& configFile) const;
     bool createSetupWizard();
+    void applyLauncherDefaults();
     void performMainStartupAction();
 
     // sets the fatal error message and m_status to Failed.
@@ -294,8 +298,11 @@ class Application : public QApplication {
     size_t m_runningInstances = 0;
     bool m_updateRunning = false;
 
-    // main window, if any
+    // main window, if any. Unused in this fork — the home window replaced it.
     MainWindow* m_mainWindow = nullptr;
+
+    // the single-pack home screen, which is what this fork actually shows
+    UnlimitedRails::HomeWindow* m_homeWindow = nullptr;
 
     // log window, if any
     ViewLogWindow* m_viewLogWindow = nullptr;

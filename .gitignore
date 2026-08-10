@@ -62,3 +62,12 @@ flatbuild
 
 # Snap
 *.snap
+
+# Build output
+/build/
+/install/
+*-Setup.exe
+*.zip
+
+# Local logs
+/*.log
