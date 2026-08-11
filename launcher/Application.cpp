@@ -652,6 +652,7 @@ Application::Application(int& argc, char** argv) : QApplication(argc, argv)
         // These must be registered or SettingsObject silently drops writes to them.
         m_settings->registerSetting("URPackInstanceID", QString());
         m_settings->registerSetting("URPackVersion", QString());
+        m_settings->registerSetting("URIconThemeMigrated", false);
 
         m_settings->registerSetting("MenuBarInsteadOfToolBar", false);
 
@@ -1248,7 +1249,17 @@ void Application::applyLauncherDefaults()
         settings()->set("ApplicationTheme", QString("dark"));
     }
     if (!m_themeManager->isValidIconTheme(settings()->get("IconTheme").toString())) {
-        settings()->set("IconTheme", QString("pe_colored"));
+        // "Simple (Dark)" — monochrome icons that suit the dark theme, rather
+        // than Prism's colourful default set.
+        settings()->set("IconTheme", QString("pe_dark"));
+    }
+    // Installs made before pe_dark became the default are moved over once.
+    // Guarded by a flag so a later deliberate choice is never overwritten.
+    if (!settings()->get("URIconThemeMigrated").toBool()) {
+        if (settings()->get("IconTheme").toString() == QLatin1String("pe_colored")) {
+            settings()->set("IconTheme", QString("pe_dark"));
+        }
+        settings()->set("URIconThemeMigrated", true);
     }
     // Java is downloaded automatically rather than asking the player to find it.
     settings()->set("AutomaticJavaDownload", true);

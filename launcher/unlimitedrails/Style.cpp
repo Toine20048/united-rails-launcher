@@ -21,7 +21,6 @@
 #include <QApplication>
 #include <QIcon>
 #include <QPalette>
-#include <QStyleFactory>
 
 namespace UnlimitedRails {
 
@@ -39,9 +38,11 @@ QIcon launcherIcon()
 
 void applyStyle(QApplication& app)
 {
-    // Fusion draws every control itself, so the same look holds regardless of
-    // the Windows version underneath.
-    app.setStyle(QStyleFactory::create(QStringLiteral("Fusion")));
+    // Deliberately does NOT call setStyle(). The theme system installs a
+    // HintOverrideProxyStyle, and setStyle() destroys it — leaving dangling
+    // pointers that crash inside Qt6Widgets later (it took down the mod
+    // download dialog). The themes already build on Fusion, so the palette
+    // and stylesheet below are enough to get the look we want.
 
     // Every window and dialog gets our mark. Without this they inherit
     // Prism's logo from the icon theme.

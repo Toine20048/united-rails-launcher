@@ -73,6 +73,32 @@ constexpr int kFadeMs = 900;
 
 /** Header logo height, downscaled from the 128px tiled render. */
 constexpr int kHeaderLogoHeight = 46;
+
+/**
+ * Makes every newline in the changelog a visible line break.
+ *
+ * Markdown treats a single newline as a soft wrap, so lines typed separately in
+ * the admin panel would run together into one paragraph. Two trailing spaces is
+ * Markdown's hard line break, so adding them preserves what was typed while
+ * leaving headings, lists and emphasis working as normal.
+ */
+QString hardWrapLines(const QString& markdown)
+{
+    QStringList lines = markdown.split(QLatin1Char('\n'));
+    for (auto& line : lines) {
+        QString trimmedEnd = line;
+        while (trimmedEnd.endsWith(QLatin1Char(' ')) || trimmedEnd.endsWith(QLatin1Char('\r'))) {
+            trimmedEnd.chop(1);
+        }
+        // Blank lines already separate paragraphs and must stay blank.
+        if (!trimmedEnd.isEmpty()) {
+            line = trimmedEnd + QStringLiteral("  ");
+        } else {
+            line = trimmedEnd;
+        }
+    }
+    return lines.join(QLatin1Char('\n'));
+}
 }  // namespace
 
 /**
@@ -487,7 +513,7 @@ void HomeWindow::onPackRefreshed()
     const bool haveChangelog = !info.changelog.trimmed().isEmpty();
     m_changelog->setVisible(haveChangelog);
     if (haveChangelog) {
-        m_changelog->setMarkdown(info.changelog);
+        m_changelog->setMarkdown(hardWrapLines(info.changelog));
     }
 
     loadScreenshots();
