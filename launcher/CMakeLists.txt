@@ -1375,6 +1375,10 @@ install(TARGETS ${Launcher_Name}
     FRAMEWORK DESTINATION ${FRAMEWORK_DEST_DIR} COMPONENT Runtime
 )
 
+# GPL-3.0 section 4 requires a copy of the licence to accompany the binary, so
+# it ships next to the executable rather than only living in the repository.
+install(FILES "${CMAKE_SOURCE_DIR}/LICENSE" "${CMAKE_SOURCE_DIR}/COPYING.md" DESTINATION ${BINARY_DEST_DIR})
+
 # Deploy PDBs
 if(CMAKE_CXX_LINKER_SUPPORTS_PDB)
     install(FILES $<TARGET_PDB_FILE:${Launcher_Name}> DESTINATION ${BINARY_DEST_DIR} OPTIONAL)

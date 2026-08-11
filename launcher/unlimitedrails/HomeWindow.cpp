@@ -47,6 +47,7 @@
 #include "minecraft/MinecraftInstance.h"
 #include "minecraft/auth/AccountList.h"
 #include "minecraft/auth/MinecraftAccount.h"
+#include "ui/dialogs/AboutDialog.h"
 #include "ui/dialogs/CustomMessageBox.h"
 #include "ui/dialogs/MSALoginDialog.h"
 #include "ui/dialogs/ProgressDialog.h"
@@ -358,6 +359,13 @@ void HomeWindow::buildUi()
         if (auto* instance = packInstance()) {
             DesktopServices::openPath(instance->gameRoot(), true);
         }
+    });
+    gearMenu->addSeparator();
+    // The licence and credits live in this dialog. Upstream reached it from the
+    // main window, which this fork does not show, so it needs a way in here.
+    gearMenu->addAction(tr("About && licence"), this, [this]() {
+        AboutDialog dialog(this);
+        dialog.exec();
     });
     m_gear->setMenu(gearMenu);
     bottom->addWidget(m_gear);
