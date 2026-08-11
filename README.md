@@ -37,6 +37,21 @@ Grab the installer or the portable zip from
 Windows only for now. The code still builds for Linux and macOS as upstream
 does, but those are not tested or released here.
 
+### "Windows protected your PC"
+
+Windows will probably show a blue **"Windows protected your PC"** box the first
+time you run the launcher. To continue, click **More info**, then **Run anyway**.
+
+This is expected, and it is not a virus warning. Windows shows it for any
+program that has not been signed with a paid code-signing certificate, purely
+because it has not seen it downloaded many times before. It says nothing about
+what the program does.
+
+Signing certificates cost money per year, and this is a free community
+launcher, so it is unsigned for now. If you would rather verify the download
+yourself, every release is built from the source in this repository — you can
+read it, and build it yourself with the instructions below.
+
 ## Building from source
 
 Requires a C++20 compiler, CMake, Ninja and Qt 6. On Windows via
