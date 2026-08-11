@@ -142,6 +142,26 @@ Prism's setup wizard is skipped via `applyLauncherDefaults()`, which sets the
 theme, language and automatic Java download. Without it, a first run lands on a
 theme picker instead of the Play button.
 
+## Idea: incremental updates (not built)
+
+Every update downloads the whole `.mrpack`. Measured against Neo Rails 3.1:
+
+| Part | Size | Behaviour on update |
+| --- | --- | --- |
+| 110 files from Modrinth's CDN | 488 MB | Already incremental — Prism diffs the index and skips unchanged files |
+| 228 files bundled in the `.mrpack` | 74 MB compressed | Re-downloaded and re-extracted every time |
+
+The bundled part is 60.5 MB of 27 mods, 10.6 MB shaderpacks, 2.7 MB resource
+packs, 0.4 MB configs. Those 27 are the mods not on Modrinth — including the
+ones written in-house, which are exactly what changes between versions. So a
+one-line fix in RailAtlas currently costs every player 78 MB.
+
+The fix would be a file-level sync: publish each override file content-addressed
+by SHA-256 with a `manifest.json`, and have the launcher download only what
+differs. A typical update drops to a few MB. The cost is that publishing becomes
+"run a script, then upload" rather than just uploading the `.mrpack`, which is
+why it was deferred.
+
 ## Not verified yet
 
 The launcher builds, starts, reaches the API and reports the right state. These
