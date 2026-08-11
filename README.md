@@ -31,8 +31,15 @@
 Grab the installer or the portable zip from
 [Releases](../../releases).
 
-- **Installer** — `UnlimitedRails-Setup.exe`
-- **Portable** — unzip anywhere and run `unlimitedrails.exe`
+- **Installer** — `UnlimitedRails-Setup.exe`. Installs to your user folder and
+  adds a Start menu shortcut. No admin rights needed.
+- **Portable** — `UnlimitedRails-1.0.0-win64-portable.zip`. Unzip anywhere and
+  run `unlimitedrails.exe`. Nothing is installed, and you can delete the folder
+  to remove it.
+
+Both contain the same launcher. Your accounts, the modpack and your worlds are
+stored in `%APPDATA%\UnlimitedRails` either way, so you can switch between them
+without losing anything.
 
 Windows only for now. The code still builds for Linux and macOS as upstream
 does, but those are not tested or released here.
