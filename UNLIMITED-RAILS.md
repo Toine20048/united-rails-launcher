@@ -162,12 +162,13 @@ differs. A typical update drops to a few MB. The cost is that publishing becomes
 "run a script, then upload" rather than just uploading the `.mrpack`, which is
 why it was deferred.
 
-## Not verified yet
+## Verified end to end
 
-The launcher builds, starts, reaches the API and reports the right state. These
-paths have not been exercised end to end:
+Confirmed working against the live site and a real account:
 
-- Microsoft login (needs real credentials).
-- Installing the pack (78 MB download plus NeoForge setup).
+- Microsoft login, and signing an account back out.
+- Installing the pack — download, NeoForge setup, the lot.
 - Launching the game.
-- An actual update, which needs a second pack version published.
+- Updating from one published pack version to the next.
+
+Released as v1.0.0 on 11 August 2026, as an installer and a portable zip.
