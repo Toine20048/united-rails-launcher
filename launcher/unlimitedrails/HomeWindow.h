@@ -22,6 +22,7 @@
 #include <QPixmap>
 #include <QVector>
 
+#include "unlimitedrails/LauncherUpdate.h"
 #include "unlimitedrails/PackSource.h"
 
 class QComboBox;
@@ -65,6 +66,11 @@ class HomeWindow : public QMainWindow {
     /** Opens the given instance page (mods, resourcepacks, console, settings…). */
     void openInstancePage(const QString& pageId);
 
+    /** Re-reads total playtime from the instance and updates the label. */
+    void refreshPlaytime();
+
+    void onLauncherUpdateAvailable(const LauncherRelease& release);
+
    private:
     void buildUi();
     void refreshAccounts();
@@ -88,7 +94,12 @@ class HomeWindow : public QMainWindow {
     void launchPack();
 
     PackSource* m_packs = nullptr;
+    LauncherUpdate* m_launcherUpdate = nullptr;
+    LauncherRelease m_pendingRelease;
 
+    QWidget* m_updateBar = nullptr;
+    QLabel* m_updateText = nullptr;
+    QLabel* m_playtime = nullptr;
     QLabel* m_headerVersion = nullptr;
     QLabel* m_shotCaption = nullptr;
     QTextBrowser* m_changelog = nullptr;

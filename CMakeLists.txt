@@ -195,9 +195,12 @@ set(Launcher_LOGIN_CALLBACK_URL "https://prismlauncher.org/successful-login" CAC
 set(Launcher_LEGACY_FMLLIBS_BASE_URL "https://files.prismlauncher.org/fmllibs/" CACHE STRING "URL for legacy (<=1.5.2) FML Libraries.")
 
 ######## Set version numbers ########
-set(Launcher_VERSION_MAJOR 12)
+# This fork's own version, not upstream Prism's. The update check compares this
+# against the newest GitHub release tag, so it MUST be bumped before tagging a
+# release or nobody will be told there is one.
+set(Launcher_VERSION_MAJOR 1)
 set(Launcher_VERSION_MINOR 0)
-set(Launcher_VERSION_PATCH 0)
+set(Launcher_VERSION_PATCH 3)
 
 set(Launcher_VERSION_NAME "${Launcher_VERSION_MAJOR}.${Launcher_VERSION_MINOR}.${Launcher_VERSION_PATCH}")
 set(Launcher_VERSION_NAME4 "${Launcher_VERSION_MAJOR}.${Launcher_VERSION_MINOR}.${Launcher_VERSION_PATCH}.0")

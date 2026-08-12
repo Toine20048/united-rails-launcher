@@ -38,7 +38,9 @@
 #include <QWidget>
 
 #include "Application.h"
+#include "BuildConfig.h"
 #include "DesktopServices.h"
+#include "MMCTime.h"
 #include "icons/IconList.h"
 #include "icons/MMCIcon.h"
 #include "InstanceImportTask.h"
@@ -208,6 +210,12 @@ HomeWindow::HomeWindow(QWidget* parent) : QMainWindow(parent)
     // second or two to arrive, and starting on black looks broken.
     m_backdrop->setImage(QPixmap(QStringLiteral(":/default-backdrop.jpg")));
 
+    m_launcherUpdate = new LauncherUpdate(this);
+    connect(m_launcherUpdate, &LauncherUpdate::updateAvailable, this, &HomeWindow::onLauncherUpdateAvailable);
+    m_launcherUpdate->check();
+
+    refreshPlaytime();
+
     m_shotTimer = new QTimer(this);
     m_shotTimer->setInterval(kScreenshotIntervalMs);
     connect(m_shotTimer, &QTimer::timeout, this, &HomeWindow::showNextScreenshot);
@@ -276,6 +284,12 @@ void HomeWindow::buildUi()
             text-align: center;
         }
         QProgressBar::chunk { background: #f0a500; border-radius: 5px; }
+        /* Launcher update banner */
+        QWidget#updateBar {
+            background: rgba(240, 165, 0, 28);
+            border: 1px solid #a06e00;
+            border-radius: 8px;
+        }
     )"));
 
     auto* outer = new QVBoxLayout(m_backdrop);
@@ -301,9 +315,35 @@ void HomeWindow::buildUi()
 
     header->addStretch(1);
 
+    m_playtime = new QLabel(m_backdrop);
+    m_playtime->setAlignment(Qt::AlignRight);
+    header->addWidget(m_playtime);
+
     m_headerVersion = new QLabel(m_backdrop);
+    m_headerVersion->setAlignment(Qt::AlignRight);
     header->addWidget(m_headerVersion);
     outer->addLayout(header);
+
+    // --- launcher update banner (hidden until there is one) ---------------
+    m_updateBar = new QWidget(m_backdrop);
+    m_updateBar->setObjectName(QStringLiteral("updateBar"));
+    auto* updateLayout = new QHBoxLayout(m_updateBar);
+    updateLayout->setContentsMargins(12, 8, 12, 8);
+    m_updateText = new QLabel(m_updateBar);
+    updateLayout->addWidget(m_updateText, 1);
+
+    auto* updateNow = new QPushButton(tr("Update now"), m_updateBar);
+    connect(updateNow, &QPushButton::clicked, this, [this]() {
+        m_launcherUpdate->downloadAndRun(m_pendingRelease, this);
+    });
+    updateLayout->addWidget(updateNow);
+
+    auto* updateLater = new QPushButton(tr("Later"), m_updateBar);
+    connect(updateLater, &QPushButton::clicked, this, [this]() { m_updateBar->setVisible(false); });
+    updateLayout->addWidget(updateLater);
+
+    m_updateBar->setVisible(false);
+    outer->addWidget(m_updateBar);
 
     // Empty space in the middle is deliberate — it is where the screenshot shows.
     outer->addStretch(1);
@@ -628,6 +668,32 @@ void HomeWindow::applyLauncherIcon(MinecraftInstance* instance)
     }
 }
 
+void HomeWindow::refreshPlaytime()
+{
+    auto* instance = packInstance();
+    if (!instance) {
+        m_playtime->clear();
+        return;
+    }
+
+    const int64_t seconds = instance->totalTimePlayed();
+    if (seconds <= 0) {
+        m_playtime->clear();
+        return;
+    }
+
+    m_playtime->setText(tr("%1 played").arg(
+        Time::prettifyDuration(seconds, APPLICATION->settings()->get("ShowGameTimeWithoutDays").toBool())));
+}
+
+void HomeWindow::onLauncherUpdateAvailable(const LauncherRelease& release)
+{
+    m_pendingRelease = release;
+    m_updateText->setText(tr("Launcher %1 is available — you have %2.")
+                              .arg(release.version, LauncherUpdate::currentVersion()));
+    m_updateBar->setVisible(true);
+}
+
 void HomeWindow::openInstancePage(const QString& pageId)
 {
     auto* instance = packInstance();
@@ -776,6 +842,10 @@ void HomeWindow::launchPack()
             ->show();
         return;
     }
+
+    // Playtime is written when the session ends, so refresh the label then.
+    // UniqueConnection because this runs on every launch.
+    connect(instance, &BaseInstance::runningStatusChanged, this, &HomeWindow::refreshPlaytime, Qt::UniqueConnection);
 
     APPLICATION->launch(instance, LaunchMode::Normal, nullptr, account);
 }

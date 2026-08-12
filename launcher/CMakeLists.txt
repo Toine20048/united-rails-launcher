@@ -835,6 +835,8 @@ SET(LAUNCHER_SOURCES
     unlimitedrails/PackSource.cpp
     unlimitedrails/HomeWindow.h
     unlimitedrails/HomeWindow.cpp
+    unlimitedrails/LauncherUpdate.h
+    unlimitedrails/LauncherUpdate.cpp
 
     # GUI - windows
     ui/GuiUtil.h
