@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 /*
- *  Unlimited Rails Launcher - a Prism Launcher fork for one modpack
- *  Copyright (C) 2026 Unlimited Rails
+ *  United Rails Launcher - a Prism Launcher fork for one modpack
+ *  Copyright (C) 2026 United Rails
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -22,8 +22,8 @@
 #include <QPixmap>
 #include <QVector>
 
-#include "unlimitedrails/LauncherUpdate.h"
-#include "unlimitedrails/PackSource.h"
+#include "unitedrails/LauncherUpdate.h"
+#include "unitedrails/PackSource.h"
 
 class QComboBox;
 class QLabel;
@@ -34,7 +34,7 @@ class QTimer;
 class QToolButton;
 class MinecraftInstance;
 
-namespace UnlimitedRails {
+namespace UnitedRails {
 
 /**
  * The entire launcher UI: one pack, one button.
@@ -117,4 +117,4 @@ class HomeWindow : public QMainWindow {
     bool m_busy = false;
 };
 
-}  // namespace UnlimitedRails
+}  // namespace UnitedRails

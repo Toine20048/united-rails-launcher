@@ -6,7 +6,7 @@ notices stating that it was changed, and the date of those changes.
 **Base:** [PrismLauncher](https://github.com/PrismLauncher/PrismLauncher) v12.0.0
 (`develop`, commit `d7870ff659cbb66707fe0141e21e28bf84210857`)
 
-**Modified by:** Unlimited Rails
+**Modified by:** United Rails
 **Date of modifications:** 10–11 August 2026
 
 This is an unofficial fork. It is **not** produced, endorsed, or supported by
@@ -18,14 +18,14 @@ them.
 ### Purpose
 
 Upstream Prism manages any number of Minecraft instances from any source. This
-fork launches exactly one modpack — Neo Rails, from `unlimited-rails.de` — and
+fork launches exactly one modpack — Neo Rails, from `united-rails.net` — and
 the interface was reduced to match.
 
-### New code (`launcher/unlimitedrails/`)
+### New code (`launcher/unitedrails/`)
 
 | File | Purpose |
 | --- | --- |
-| `PackSource.{h,cpp}` | Polls `unlimited-rails.de/api/version.php` for the current pack version, download URL, SHA-256, changelog and screenshots |
+| `PackSource.{h,cpp}` | Polls `united-rails.net/api/version.php` for the current pack version, download URL, SHA-256, changelog and screenshots |
 | `HomeWindow.{h,cpp}` | Replaces the instance-list UI with a single-pack home screen: one Install/Update/Play button, account picker, changelog, screenshot backdrop, settings menu |
 | `Style.{h,cpp}` | Application-wide dark/gold theme and the multi-size launcher icon |
 
@@ -33,7 +33,7 @@ the interface was reduced to match.
 
 | File | Change |
 | --- | --- |
-| `CMakeLists.txt` | `-mguard=cf` guarded behind `check_cxx_compiler_flag` (GCC 16 rejects it); binary renamed to `unlimitedrails` |
+| `CMakeLists.txt` | `-mguard=cf` guarded behind `check_cxx_compiler_flag` (GCC 16 rejects it); binary renamed to `unitedrails` |
 | `launcher/CMakeLists.txt` | Added `Launcher_WARNINGS_AS_ERRORS` option (default ON, matching previous behaviour); added the new sources; made the Windows resource depend on the `.ico` and `.manifest` |
 | `launcher/Application.cpp/.h` | Shows `HomeWindow` instead of `MainWindow`; skips the setup wizard via `applyLauncherDefaults()`; registers the `URPack*` settings; applies the fork's style |
 | `launcher/main.cpp` | `Q_INIT_RESOURCE` renamed to match the renamed `.qrc` |

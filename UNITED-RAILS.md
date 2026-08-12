@@ -1,8 +1,8 @@
-# Unlimited Rails Launcher — fork notes
+# United Rails Launcher — fork notes
 
 A fork of [PrismLauncher](https://github.com/PrismLauncher/PrismLauncher) v12.0.0,
 rebranded and cut down to launch one modpack: Neo Rails, served from
-`https://unlimited-rails.de/`.
+`https://united-rails.net/`.
 
 Licensed GPL-3.0, same as upstream. Upstream copyright notices are kept and
 ours added alongside — that is a licence requirement, not a courtesy.
@@ -55,11 +55,11 @@ Driven entirely by three CMake variables, so renaming the files in
 
 | Variable | Value |
 | --- | --- |
-| `Launcher_CommonName` | `UnlimitedRails` |
-| `Launcher_DisplayName` | `Unlimited Rails` |
-| `Launcher_AppID` | `de.unlimitedrails.Launcher` |
-| `Launcher_APP_BINARY_NAME` | `unlimitedrails` |
-| `Launcher_Domain` | `unlimited-rails.de` |
+| `Launcher_CommonName` | `UnitedRails` |
+| `Launcher_DisplayName` | `United Rails` |
+| `Launcher_AppID` | `net.unitedrails.Launcher` |
+| `Launcher_APP_BINARY_NAME` | `unitedrails` |
+| `Launcher_Domain` | `united-rails.net` |
 
 Two traps:
 
@@ -81,9 +81,9 @@ is registering an Azure app and setting `-DLauncher_MSA_CLIENT_ID=...`.
 
 ## Icons
 
-`program_info/de.unlimitedrails.Launcher.svg` is the source of truth and is
+`program_info/net.unitedrails.Launcher.svg` is the source of truth and is
 currently a **placeholder**. Replace it, then run `/genicons.sh` to regenerate
-`unlimitedrails.ico` (7 sizes, 16–256) and the 256px PNG, then rebuild.
+`unitedrails.ico` (7 sizes, 16–256) and the 256px PNG, then rebuild.
 
 ## Distribution
 
@@ -97,7 +97,7 @@ needs no installer, no admin rights, so this is not currently worth chasing.
 
 ## The fork's own code
 
-Everything specific to this launcher is in `launcher/unlimitedrails/`:
+Everything specific to this launcher is in `launcher/unitedrails/`:
 
 - **`PackSource`** — polls `api/version.php` for the current version, download
   URL, sha256, changelog and screenshot list.

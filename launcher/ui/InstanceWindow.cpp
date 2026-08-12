@@ -36,7 +36,7 @@
 
 #include "InstanceWindow.h"
 #include "Application.h"
-#include "unlimitedrails/Style.h"
+#include "unitedrails/Style.h"
 
 #include <QCloseEvent>
 #include <QHBoxLayout>
@@ -61,7 +61,7 @@ InstanceWindow::InstanceWindow(MinecraftInstance* instance, QWidget* parent) : Q
     {
         // This fork manages a single pack, so the per-instance icon carries no
         // information. Use the launcher mark, same as every other window.
-        setWindowIcon(UnlimitedRails::launcherIcon());
+        setWindowIcon(UnitedRails::launcherIcon());
         setWindowTitle(windowTitle);
     }
 

@@ -828,15 +828,15 @@ SET(LAUNCHER_SOURCES
     logs/AnonymizeLog.cpp
     logs/AnonymizeLog.h
 
-    # Unlimited Rails - single-pack home screen and pack feed
-    unlimitedrails/Style.h
-    unlimitedrails/Style.cpp
-    unlimitedrails/PackSource.h
-    unlimitedrails/PackSource.cpp
-    unlimitedrails/HomeWindow.h
-    unlimitedrails/HomeWindow.cpp
-    unlimitedrails/LauncherUpdate.h
-    unlimitedrails/LauncherUpdate.cpp
+    # United Rails - single-pack home screen and pack feed
+    unitedrails/Style.h
+    unitedrails/Style.cpp
+    unitedrails/PackSource.h
+    unitedrails/PackSource.cpp
+    unitedrails/HomeWindow.h
+    unitedrails/HomeWindow.cpp
+    unitedrails/LauncherUpdate.h
+    unitedrails/LauncherUpdate.cpp
 
     # GUI - windows
     ui/GuiUtil.h

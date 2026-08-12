@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 /*
- *  Unlimited Rails Launcher - a Prism Launcher fork for one modpack
- *  Copyright (C) 2026 Unlimited Rails
+ *  United Rails Launcher - a Prism Launcher fork for one modpack
+ *  Copyright (C) 2026 United Rails
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@
 class QApplication;
 class QIcon;
 
-namespace UnlimitedRails {
+namespace UnitedRails {
 
 /** Site palette, so widget code does not repeat hex values. */
 namespace Colors {
@@ -37,7 +37,7 @@ constexpr const char* kMuted = "#888680";
 }  // namespace Colors
 
 /**
- * Applies the Unlimited Rails look to the whole application — every dialog,
+ * Applies the United Rails look to the whole application — every dialog,
  * message box and progress window, not just the home screen.
  */
 void applyStyle(QApplication& app);
@@ -51,4 +51,4 @@ void applyStyle(QApplication& app);
  */
 QIcon launcherIcon();
 
-}  // namespace UnlimitedRails
+}  // namespace UnitedRails

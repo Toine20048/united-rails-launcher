@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 /*
- *  Unlimited Rails Launcher - a Prism Launcher fork for one modpack
- *  Copyright (C) 2026 Unlimited Rails
+ *  United Rails Launcher - a Prism Launcher fork for one modpack
+ *  Copyright (C) 2026 United Rails
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -16,7 +16,7 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "unlimitedrails/HomeWindow.h"
+#include "unitedrails/HomeWindow.h"
 
 #include <QCloseEvent>
 #include <QComboBox>
@@ -54,12 +54,12 @@
 #include "ui/dialogs/MSALoginDialog.h"
 #include "ui/dialogs/ProgressDialog.h"
 
-namespace UnlimitedRails {
+namespace UnitedRails {
 
 namespace {
 constexpr int kScreenshotIntervalMs = 8000;
 constexpr const char* kInstanceName = "Neo Rails";
-constexpr const char* kIconKey = "unlimitedrails";
+constexpr const char* kIconKey = "unitedrails";
 
 /**
  * The backdrop is not dimmed as a whole — that washes the screenshot out.
@@ -193,7 +193,7 @@ class HomeWindow::Backdrop : public QWidget {
 
 HomeWindow::HomeWindow(QWidget* parent) : QMainWindow(parent)
 {
-    setWindowTitle(QStringLiteral("Unlimited Rails"));
+    setWindowTitle(QStringLiteral("United Rails"));
     buildUi();
 
     m_packs = new PackSource(this);
@@ -305,7 +305,7 @@ void HomeWindow::buildUi()
                         .scaledToHeight(kHeaderLogoHeight, Qt::SmoothTransformation));
     header->addWidget(icon);
 
-    auto* title = new QLabel(QStringLiteral("UNLIMITED RAILS"), m_backdrop);
+    auto* title = new QLabel(QStringLiteral("UNITED RAILS"), m_backdrop);
     title->setObjectName(QStringLiteral("title"));
     QFont titleFont = title->font();
     titleFont.setPointSize(titleFont.pointSize() + 10);
@@ -571,7 +571,7 @@ void HomeWindow::onPackRefreshed()
 void HomeWindow::onPackRefreshFailed(const QString& reason)
 {
     m_headerVersion->setText(tr("Offline"));
-    m_changelog->setPlainText(tr("Could not reach unlimited-rails.de.\n\n%1").arg(reason));
+    m_changelog->setPlainText(tr("Could not reach united-rails.net.\n\n%1").arg(reason));
 
     // An installed pack is still playable with no network, so only block the
     // button when there is nothing installed to play.
@@ -660,8 +660,8 @@ void HomeWindow::applyLauncherIcon(MinecraftInstance* instance)
     // The pack ships its own icon and the import applies it. Replace it so the
     // console window and everything else show the launcher mark instead.
     if (!APPLICATION->icons()->iconFileExists(key)) {
-        APPLICATION->icons()->addIcon(key, QStringLiteral("Unlimited Rails"),
-                                      QStringLiteral(":/de.unlimitedrails.Launcher.svg"), IconType::Builtin);
+        APPLICATION->icons()->addIcon(key, QStringLiteral("United Rails"),
+                                      QStringLiteral(":/net.unitedrails.Launcher.svg"), IconType::Builtin);
     }
     if (instance->iconKey() != key) {
         instance->setIconKey(key);
@@ -850,4 +850,4 @@ void HomeWindow::launchPack()
     APPLICATION->launch(instance, LaunchMode::Normal, nullptr, account);
 }
 
-}  // namespace UnlimitedRails
+}  // namespace UnitedRails

@@ -50,8 +50,8 @@
 #include "tools/GenericProfiler.h"
 #include "ui/InstanceWindow.h"
 #include "ui/MainWindow.h"
-#include "unlimitedrails/HomeWindow.h"
-#include "unlimitedrails/Style.h"
+#include "unitedrails/HomeWindow.h"
+#include "unitedrails/Style.h"
 #include "ui/ToolTipFilter.h"
 #include "ui/ViewLogWindow.h"
 
@@ -580,6 +580,10 @@ Application::Application(int& argc, char** argv) : QApplication(argc, argv)
     }
 
     {
+        // The rename from Unlimited Rails moved the data folder, so bring the
+        // player's account, worlds and modpack across before anything reads it.
+        migrateFromUnlimitedRails(dataPath);
+
         auto migrated = handleDataMigration(
             dataPath, FS::PathCombine(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation), "../../PolyMC"), "PolyMC",
             "polymc.cfg");
@@ -648,7 +652,7 @@ Application::Application(int& argc, char** argv) : QApplication(argc, argv)
         // Remembered state
         m_settings->registerSetting("LastUsedGroupForNewInstance", QString());
 
-        // Unlimited Rails: which instance holds the pack, and what version is in it.
+        // United Rails: which instance holds the pack, and what version is in it.
         // These must be registered or SettingsObject silently drops writes to them.
         m_settings->registerSetting("URPackInstanceID", QString());
         m_settings->registerSetting("URPackVersion", QString());
@@ -1229,8 +1233,8 @@ Application::Application(int& argc, char** argv) : QApplication(argc, argv)
     applyLauncherDefaults();
 
     m_themeManager->applyCurrentlySelectedTheme(true);
-    // Applied after the theme so the Unlimited Rails look wins everywhere.
-    UnlimitedRails::applyStyle(*this);
+    // Applied after the theme so the United Rails look wins everywhere.
+    UnitedRails::applyStyle(*this);
     performMainStartupAction();
 }
 
@@ -1437,9 +1441,9 @@ void Application::performMainStartupAction()
     if (!m_homeWindow) {
         // This fork ships a single-pack home screen instead of Prism's instance
         // list. showMainWindow() is left intact but is no longer the entry point.
-        m_homeWindow = new UnlimitedRails::HomeWindow();
+        m_homeWindow = new UnitedRails::HomeWindow();
         m_homeWindow->show();
-        connect(m_homeWindow, &UnlimitedRails::HomeWindow::isClosing, this, &Application::on_windowClose);
+        connect(m_homeWindow, &UnitedRails::HomeWindow::isClosing, this, &Application::on_windowClose);
         m_openWindows++;
         qDebug() << "<> Home window shown.";
     }
@@ -1979,6 +1983,75 @@ QString Application::getUserAgent()
     }
 
     return BuildConfig.USER_AGENT;
+}
+
+void Application::migrateFromUnlimitedRails(const QString& currentData) const
+{
+    const QString oldData =
+        FS::PathCombine(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation), "../../UnlimitedRails");
+    const QString oldConfig = FS::PathCombine(oldData, "unlimitedrails.cfg");
+
+    // Nothing to do if the old install isn't there.
+    if (!QFileInfo::exists(oldConfig)) {
+        return;
+    }
+
+    // If this install already has its own data, merging the two automatically
+    // would be guesswork. Leave both alone and say so.
+    if (QFileInfo::exists(FS::PathCombine(currentData, BuildConfig.LAUNCHER_CONFIGFILE))) {
+        qDebug() << "<> Old Unlimited Rails data found, but this install already has data. Not migrating.";
+        return;
+    }
+
+    const auto answer = QMessageBox::question(
+        nullptr, BuildConfig.LAUNCHER_DISPLAYNAME,
+        tr("This launcher used to be called Unlimited Rails, and your data is still in the old folder.\n\n"
+           "Move it across? You keep your account, your worlds, the modpack and your settings, and nothing "
+           "needs downloading again.\n\n"
+           "The old folder is deleted afterwards. Choosing No leaves it alone and starts fresh, which means "
+           "signing in and downloading the modpack again."),
+        QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
+
+    if (answer != QMessageBox::Yes) {
+        qDebug() << "<> Migration from Unlimited Rails declined.";
+        return;
+    }
+
+    using namespace Filters;
+    QList<Filter> filters;
+    filters.append(equals("unlimitedrails.cfg"));
+    filters.append(equals(BuildConfig.LAUNCHER_CONFIGFILE));
+    filters.append(equals("accounts.json"));
+    filters.append(equals("playtime.cfg"));
+    filters.append(startsWith("accounts/"));
+    filters.append(startsWith("assets/"));
+    filters.append(startsWith("icons/"));
+    filters.append(startsWith("instances/"));
+    filters.append(startsWith("libraries/"));
+    filters.append(startsWith("meta/"));
+    filters.append(startsWith("mods/"));
+    filters.append(startsWith("themes/"));
+
+    ProgressDialog dialog;
+    DataMigrationTask task(oldData, currentData, any(std::move(filters)));
+    if (!dialog.execWithTask(&task)) {
+        QMessageBox::critical(nullptr, BuildConfig.LAUNCHER_DISPLAYNAME,
+                              tr("Could not move your data: %1\n\nThe old folder has been left untouched.").arg(task.failReason()));
+        return;
+    }
+
+    // The settings file is named after the binary, so the copy landed as
+    // unlimitedrails.cfg. Put it where this build expects to find it.
+    const QString copiedOldConfig = FS::PathCombine(currentData, "unlimitedrails.cfg");
+    const QString newConfig = FS::PathCombine(currentData, BuildConfig.LAUNCHER_CONFIGFILE);
+    if (QFileInfo::exists(copiedOldConfig) && !QFileInfo::exists(newConfig)) {
+        QFile::rename(copiedOldConfig, newConfig);
+    }
+
+    qDebug() << "<> Migration from Unlimited Rails succeeded, removing" << oldData;
+    if (!FS::deletePath(oldData)) {
+        qWarning() << "Could not remove the old data folder; it is safe to delete by hand.";
+    }
 }
 
 bool Application::handleDataMigration(const QString& currentData,

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 /*
- *  Unlimited Rails Launcher - a Prism Launcher fork for one modpack
- *  Copyright (C) 2026 Unlimited Rails
+ *  United Rails Launcher - a Prism Launcher fork for one modpack
+ *  Copyright (C) 2026 United Rails
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -23,10 +23,10 @@
 #include <QUrl>
 #include <QVector>
 
-namespace UnlimitedRails {
+namespace UnitedRails {
 
 /** Where the launcher looks for the pack and everything shown on the home screen. */
-constexpr const char* kApiVersionUrl = "https://unlimited-rails.de/api/version.php";
+constexpr const char* kApiVersionUrl = "https://united-rails.net/api/version.php";
 
 /** Settings keys owned by this fork. */
 constexpr const char* kSettingInstanceId = "URPackInstanceID";
@@ -70,4 +70,4 @@ class PackSource : public QObject {
     bool m_busy = false;
 };
 
-}  // namespace UnlimitedRails
+}  // namespace UnitedRails

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 /*
- *  Unlimited Rails Launcher - a Prism Launcher fork for one modpack
- *  Copyright (C) 2026 Unlimited Rails
+ *  United Rails Launcher - a Prism Launcher fork for one modpack
+ *  Copyright (C) 2026 United Rails
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -16,7 +16,7 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "unlimitedrails/LauncherUpdate.h"
+#include "unitedrails/LauncherUpdate.h"
 
 #include <QDesktopServices>
 #include <QDir>
@@ -34,7 +34,7 @@
 #include "BuildConfig.h"
 #include "ui/dialogs/CustomMessageBox.h"
 
-namespace UnlimitedRails {
+namespace UnitedRails {
 
 LauncherUpdate::LauncherUpdate(QObject* parent) : QObject(parent) {}
 
@@ -120,7 +120,7 @@ void LauncherUpdate::downloadAndRun(const LauncherRelease& release, QWidget* par
     }
 
     const QString target = QDir(QStandardPaths::writableLocation(QStandardPaths::TempLocation))
-                               .filePath(QStringLiteral("UnlimitedRails-%1-Setup.exe").arg(release.version));
+                               .filePath(QStringLiteral("UnitedRails-%1-Setup.exe").arg(release.version));
 
     auto* progress = new QProgressDialog(tr("Downloading launcher %1…").arg(release.version), tr("Cancel"), 0, 100, parent);
     progress->setWindowTitle(tr("Updating launcher"));
@@ -174,4 +174,4 @@ void LauncherUpdate::downloadAndRun(const LauncherRelease& release, QWidget* par
     });
 }
 
-}  // namespace UnlimitedRails
+}  // namespace UnitedRails

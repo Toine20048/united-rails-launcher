@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 /*
- *  Unlimited Rails Launcher - a Prism Launcher fork for one modpack
- *  Copyright (C) 2026 Unlimited Rails
+ *  United Rails Launcher - a Prism Launcher fork for one modpack
+ *  Copyright (C) 2026 United Rails
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -22,10 +22,10 @@
 #include <QString>
 #include <QUrl>
 
-namespace UnlimitedRails {
+namespace UnitedRails {
 
 /** Where the launcher asks what the newest release is. */
-constexpr const char* kApiLauncherUrl = "https://unlimited-rails.de/api/launcher.php";
+constexpr const char* kApiLauncherUrl = "https://united-rails.net/api/launcher.php";
 
 struct LauncherRelease {
     QString version;
@@ -73,4 +73,4 @@ class LauncherUpdate : public QObject {
     bool m_busy = false;
 };
 
-}  // namespace UnlimitedRails
+}  // namespace UnitedRails

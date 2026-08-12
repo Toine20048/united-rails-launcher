@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 /*
- *  Unlimited Rails Launcher - a Prism Launcher fork for one modpack
- *  Copyright (C) 2026 Unlimited Rails
+ *  United Rails Launcher - a Prism Launcher fork for one modpack
+ *  Copyright (C) 2026 United Rails
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -16,13 +16,13 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "unlimitedrails/Style.h"
+#include "unitedrails/Style.h"
 
 #include <QApplication>
 #include <QIcon>
 #include <QPalette>
 
-namespace UnlimitedRails {
+namespace UnitedRails {
 
 QIcon launcherIcon()
 {
@@ -154,4 +154,4 @@ void applyStyle(QApplication& app)
     )"));
 }
 
-}  // namespace UnlimitedRails
+}  // namespace UnitedRails

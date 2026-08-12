@@ -55,7 +55,7 @@ class LaunchController;
 class LocalPeer;
 class InstanceWindow;
 class MainWindow;
-namespace UnlimitedRails {
+namespace UnitedRails {
 class HomeWindow;
 }
 class ViewLogWindow;
@@ -235,6 +235,16 @@ class Application : public QApplication {
 
    private:
     bool handleDataMigration(const QString& currentData, const QString& oldData, const QString& name, const QString& configFile) const;
+
+    /**
+     * Moves data from the old "UnlimitedRails" folder after the rename.
+     *
+     * Separate from handleDataMigration() because that one deliberately only
+     * copies, leaving the original behind. Here the old folder is ours and is
+     * removed once the copy succeeds, so players are not left with two copies
+     * of a multi-gigabyte modpack.
+     */
+    void migrateFromUnlimitedRails(const QString& currentData) const;
     bool createSetupWizard();
     void applyLauncherDefaults();
     void performMainStartupAction();
@@ -302,7 +312,7 @@ class Application : public QApplication {
     MainWindow* m_mainWindow = nullptr;
 
     // the single-pack home screen, which is what this fork actually shows
-    UnlimitedRails::HomeWindow* m_homeWindow = nullptr;
+    UnitedRails::HomeWindow* m_homeWindow = nullptr;
 
     // log window, if any
     ViewLogWindow* m_viewLogWindow = nullptr;

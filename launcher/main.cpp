@@ -57,7 +57,7 @@ int main(int argc, char* argv[])
             Q_INIT_RESOURCE(backgrounds);
             Q_INIT_RESOURCE(documents);
             // Named after program_info/<Launcher_APP_BINARY_NAME>.qrc
-            Q_INIT_RESOURCE(unlimitedrails);
+            Q_INIT_RESOURCE(unitedrails);
 
             Q_INIT_RESOURCE(pe_dark);
             Q_INIT_RESOURCE(pe_light);

@@ -1,8 +1,8 @@
 <p align="center">
-  <img alt="Unlimited Rails" src="/program_info/icon-256.png" width="128">
+  <img alt="United Rails" src="/program_info/icon-256.png" width="128">
 </p>
 
-<h1 align="center">Unlimited Rails Launcher</h1>
+<h1 align="center">United Rails Launcher</h1>
 
 <p align="center">
   A Minecraft launcher for one modpack: <b>Neo Rails</b>.<br>
@@ -20,7 +20,7 @@
 ## What it does
 
 - Installs the Neo Rails modpack on first run — no instance setup, no pack browsing
-- Checks `unlimited-rails.de` on every start and offers the new version when one is published
+- Checks `united-rails.net` on every start and offers the new version when one is published
 - Updates in place, keeping worlds, settings, and any mods, resource packs or shaders the player added
 - Signs in with a Microsoft account, exactly as Prism does
 - Shows server screenshots and a changelog, both managed from the website
@@ -31,14 +31,14 @@
 Grab the installer or the portable zip from
 [Releases](../../releases).
 
-- **Installer** — `UnlimitedRails-Setup.exe`. Installs to your user folder and
+- **Installer** — `UnitedRails-Setup.exe`. Installs to your user folder and
   adds a Start menu shortcut. No admin rights needed.
-- **Portable** — `UnlimitedRails-1.0.0-win64-portable.zip`. Unzip anywhere and
-  run `unlimitedrails.exe`. Nothing is installed, and you can delete the folder
+- **Portable** — `UnitedRails-1.0.0-win64-portable.zip`. Unzip anywhere and
+  run `unitedrails.exe`. Nothing is installed, and you can delete the folder
   to remove it.
 
 Both contain the same launcher. Your accounts, the modpack and your worlds are
-stored in `%APPDATA%\UnlimitedRails` either way, so you can switch between them
+stored in `%APPDATA%\UnitedRails` either way, so you can switch between them
 without losing anything.
 
 Windows only for now. The code still builds for Linux and macOS as upstream
@@ -80,7 +80,7 @@ cmake -S . -B build -G Ninja \
   -DCMAKE_BUILD_TYPE=Release \
   -DCMAKE_INSTALL_PREFIX=install \
   -DLauncher_BUILD_PLATFORM=msys2 \
-  -DLauncher_APP_BINARY_NAME=unlimitedrails \
+  -DLauncher_APP_BINARY_NAME=unitedrails \
   -DLauncher_ENABLE_UPDATER=OFF \
   -DLauncher_WARNINGS_AS_ERRORS=OFF
 cmake --build build
@@ -108,7 +108,7 @@ Upstream copyright notices have been kept and ours added alongside, not in place
 of them. The Minecraft launching, account, Java and download machinery is the
 work of the Prism Launcher, PolyMC and MultiMC contributors.
 
-The Unlimited Rails name and logo are not part of the GPL grant — the licence
+The United Rails name and logo are not part of the GPL grant — the licence
 covers the code, not the branding. If you fork this, please rebrand it, exactly
 as this project rebranded away from Prism.
 
