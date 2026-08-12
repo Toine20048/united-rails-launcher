@@ -33,6 +33,7 @@
 #include <QTextBrowser>
 #include <QTimer>
 #include <QToolButton>
+#include <QUrlQuery>
 #include <QVBoxLayout>
 #include <QVariantAnimation>
 #include <QWidget>
@@ -785,7 +786,25 @@ bool HomeWindow::installOrUpdatePack()
         extraInfo.insert("original_instance_id", existing->id());
     }
 
-    auto* importTask = new InstanceImportTask(info.url, true, this, std::move(extraInfo));
+    // Tell the site who is downloading and what they are coming from, so the
+    // admin panel can show who has updated. The site logs it and redirects to
+    // the actual file; nothing here depends on the logging succeeding.
+    QUrl downloadUrl = info.url;
+    {
+        QUrlQuery query(downloadUrl);
+        const QString profile = m_accounts->currentData().toString();
+        if (!profile.isEmpty()) {
+            query.addQueryItem(QStringLiteral("player"), profile);
+        }
+        const QString installed = installedVersion();
+        if (!installed.isEmpty()) {
+            query.addQueryItem(QStringLiteral("from"), installed);
+        }
+        query.addQueryItem(QStringLiteral("lv"), LauncherUpdate::currentVersion());
+        downloadUrl.setQuery(query);
+    }
+
+    auto* importTask = new InstanceImportTask(downloadUrl, true, this, std::move(extraInfo));
     importTask->setName(QString::fromUtf8(kInstanceName));
     importTask->setConfirmUpdate(false);
     if (existing) {
